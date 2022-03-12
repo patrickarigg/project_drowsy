@@ -40,7 +40,7 @@ def app_drowsiness_detection():
                     wave_obj = sa.WaveObject.from_wave_file('airhorn.wav')
                     play_obj = wave_obj.play()
                     play_obj.wait_done()
-                    time.sleep(1) # Sleep for 3 seconds
+                    time.sleep(1) # Sleep for 1 second
                     self.drowsy_flag=False
 
 
@@ -106,7 +106,7 @@ def app_drowsiness_detection():
         mode=WebRtcMode.SENDRECV,
         rtc_configuration=RTC_CONFIGURATION,
         video_processor_factory=DrowsinessPredictor,
-        media_stream_constraints={"video": True, "audio": False},
+        media_stream_constraints={"video": True, "audio": True},
         async_processing=True,
     )
 
