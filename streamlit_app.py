@@ -30,42 +30,43 @@ def app_drowsiness_detection():
             preprocess_params = dict(webcam=image,
                                     image_size=145,
                                     predict=True)
+            try:
+                prediction, probs, face_coords, left_eye_coords, right_eye_coords  = make_prediction(**preprocess_params)
 
-            prediction, probs, face_coords, left_eye_coords, right_eye_coords  = make_prediction(**preprocess_params)
+                # draw eye bounding boxes using co-ordinates of the bounding box (from preprocessing)
+                xmin_l,xmax_l,ymin_l,ymax_l = left_eye_coords
+                xmin_r, xmax_r, ymin_r, ymax_r = right_eye_coords
+                #left eye
+                cv2.rectangle(image, (xmax_l,ymax_l), (xmin_l,ymin_l),
+                            color=(0, 255, 0), thickness=2)
+                #right eye
+                cv2.rectangle(image, (xmax_r, ymax_r), (xmin_r, ymin_r),
+                            color=(0, 255, 0),
+                            thickness=2)
 
-            # draw eye bounding boxes using co-ordinates of the bounding box (from preprocessing)
-            xmin_l,xmax_l,ymin_l,ymax_l = left_eye_coords
-            xmin_r, xmax_r, ymin_r, ymax_r = right_eye_coords
-            #left eye
-            cv2.rectangle(image, (xmax_l,ymax_l), (xmin_l,ymin_l),
-                          color=(0, 255, 0), thickness=2)
-            #right eye
-            cv2.rectangle(image, (xmax_r, ymax_r), (xmin_r, ymin_r),
-                          color=(0, 255, 0),
-                          thickness=2)
+                #draw face box
+                #print(face_coords)
+                xmin, xmax, ymin, ymax = face_coords
+                cv2.rectangle(image, (xmax, ymax), (xmin, ymin),
+                            color=(0, 255, 0),
+                            thickness=3)
 
-            #draw face box
-            #print(face_coords)
-            xmin, xmax, ymin, ymax = face_coords
-            cv2.rectangle(image, (xmax, ymax), (xmin, ymin),
-                          color=(0, 255, 0),
-                          thickness=3)
-
-            # evaluate
-            print(prediction)
-            print(probs)
-            # # Put text on image
+                # evaluate
+                print(prediction)
+                print(probs)
+                # # Put text on image
 
 
-            if ("closed" in prediction) or ("yawn" in prediction):
-                text = "Prediction = Drowsy"
-                cv2.putText(image, text, (40, 40),
-                        cv2.FONT_HERSHEY_PLAIN, 2, (255, 0, 0), 2)
-            else:
-                text = "Prediction = Alert"
-                cv2.putText(image, text, (40, 40),
-                        cv2.FONT_HERSHEY_PLAIN, 2, (0, 255, 0), 2)
-
+                if ("closed" in prediction) or ("yawn" in prediction):
+                    text = "Prediction = Drowsy"
+                    cv2.putText(image, text, (40, 40),
+                            cv2.FONT_HERSHEY_PLAIN, 2, (255, 0, 0), 2)
+                else:
+                    text = "Prediction = Alert"
+                    cv2.putText(image, text, (40, 40),
+                            cv2.FONT_HERSHEY_PLAIN, 2, (0, 255, 0), 2)
+            except Exception as e:
+                print(e)
 
             return image
 
