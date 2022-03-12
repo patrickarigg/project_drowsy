@@ -12,7 +12,7 @@ from streamlit_webrtc import (
 
 #Import for handling image
 from cv2 import cv2
-
+from PIL import Image
 # Models and preprocessing
 from project_drowsy.predict import make_prediction
 
@@ -106,21 +106,59 @@ def app_drowsiness_detection():
         mode=WebRtcMode.SENDRECV,
         rtc_configuration=RTC_CONFIGURATION,
         video_processor_factory=DrowsinessPredictor,
-        media_stream_constraints={"video": True, "audio": True},
+        media_stream_constraints={"video": True, "audio": False},
         async_processing=True,
     )
 
+def about():
+    st.write('Welcome to our drowiness detection system')
+    st.markdown("""
+
+     **About our app**
+    - We are attempting to reduce the prevalence of car accidents caused by driver drowsiness.
+
+    - Our app detects from a live webcam whether a driver is drowsy and if so, alerts them.
+
+    - We consider a driver as drowsy if they are yawning or they have their eyes closed.
+
+    **Examples**
+
+    """)
+
+
+    alert_image = Image.open('alert_example.png')
+    st.image(alert_image, caption='Alert driver')
+
+    drowsy_image = Image.open('drowsy_example.png')
+    st.image(drowsy_image, caption='Drowsy driver')
+
+
+def pre_recorded():
+
+    # # replace sample.mp4 for pre-recorded video
+    # video_file = open("sample.mp4", "rb").read()
+    # st.video(video_file, start_time = 3)
+
+    st.video("https://www.youtube.com/watch?v=DrKLYvLPidw")
 
 ############################ Sidebar + launching #################################################
 
-object_detection_page = "Drowsiness video detector"
+object_detection_page = "Live Video Detector"
+pre_recorded_video = "Pre-recorded Video"
+about_page = "About Drowsiness Detection"
 
 app_mode = st.sidebar.selectbox(
     "Choose the app mode",
     [
+        about_page,
         object_detection_page,
+        pre_recorded_video
     ],
 )
 st.subheader(app_mode)
+if app_mode == about_page:
+    about()
 if app_mode == object_detection_page:
     app_drowsiness_detection()
+if app_mode == pre_recorded_video:
+    pre_recorded()
