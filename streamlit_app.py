@@ -1,6 +1,8 @@
 # Import for streamlit
 import streamlit as st
 import av
+import time
+import simpleaudio as sa
 from streamlit_webrtc import (
     RTCConfiguration,
     VideoProcessorBase,
@@ -23,6 +25,8 @@ def app_drowsiness_detection():
     class DrowsinessPredictor(VideoProcessorBase):
 
         def __init__(self) -> None:
+            self.drowsy_counter = 0
+            self.drowsy_flag = False
             pass
 
         def draw_and_predict(self, image):
@@ -30,7 +34,17 @@ def app_drowsiness_detection():
             preprocess_params = dict(webcam=image,
                                     image_size=145,
                                     predict=True)
+
             try:
+                if self.drowsy_flag:
+                    wave_obj = sa.WaveObject.from_wave_file('airhorn.wav')
+                    play_obj = wave_obj.play()
+                    play_obj.wait_done()
+                    time.sleep(1) # Sleep for 3 seconds
+                    self.drowsy_flag=False
+
+
+
                 prediction, probs, face_coords, left_eye_coords, right_eye_coords  = make_prediction(**preprocess_params)
 
                 # draw eye bounding boxes using co-ordinates of the bounding box (from preprocessing)
@@ -58,16 +72,27 @@ def app_drowsiness_detection():
 
 
                 if ("closed" in prediction) or ("yawn" in prediction):
-                    text = "Prediction = Drowsy"
+                    self.drowsy_counter += 1
+                    if self.drowsy_counter >= 5:
+                        self.drowsy_flag=True
+                        text = "Prediction = Drowsy"
+                        colour = (255, 0, 0)
+                    else:
+                        text = "Prediction = Alert"
+                        colour = (0, 255, 0)
                     cv2.putText(image, text, (40, 40),
-                            cv2.FONT_HERSHEY_PLAIN, 2, (255, 0, 0), 2)
+                            cv2.FONT_HERSHEY_PLAIN, 2, colour, 2)
                 else:
+                    self.drowsy_counter = 0
                     text = "Prediction = Alert"
                     cv2.putText(image, text, (40, 40),
                             cv2.FONT_HERSHEY_PLAIN, 2, (0, 255, 0), 2)
             except Exception as e:
                 print(e)
-
+                text = 'WARNING! DRIVER NOT FOUND!'
+                print(text)
+                cv2.putText(image, text, (40, 40),
+                            cv2.FONT_HERSHEY_PLAIN, 2, (0, 255, 0), 2)
             return image
 
 
