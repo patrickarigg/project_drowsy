@@ -40,7 +40,7 @@ def app_drowsiness_detection():
                     wave_obj = sa.WaveObject.from_wave_file('airhorn.wav')
                     play_obj = wave_obj.play()
                     play_obj.wait_done()
-                    time.sleep(1) # Sleep for 1 second
+                    #time.sleep(1) # Sleep for 1 second
                     self.drowsy_flag=False
 
 
