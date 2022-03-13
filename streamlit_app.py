@@ -14,7 +14,7 @@ from streamlit_webrtc import (
 from cv2 import cv2
 from PIL import Image
 # Models and preprocessing
-from project_drowsy.predict import make_prediction
+from project_drowsy.predict import make_prediction, get_models
 
 RTC_CONFIGURATION = RTCConfiguration(
     {"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]}
@@ -27,7 +27,7 @@ def app_drowsiness_detection():
         def __init__(self) -> None:
             self.drowsy_counter = 0
             self.drowsy_flag = False
-            self.drowsy_counter=0
+            self.face_model, self.eye_model = get_models()
 
 
         def draw_and_predict(self, image):
@@ -47,7 +47,7 @@ def app_drowsiness_detection():
 
 
 
-                prediction, probs, face_coords, left_eye_coords, right_eye_coords  = make_prediction(**preprocess_params)
+                prediction, probs, face_coords, left_eye_coords, right_eye_coords  = make_prediction(self.face_model,self.eye_model,**preprocess_params)
 
                 # draw eye bounding boxes using co-ordinates of the bounding box (from preprocessing)
                 xmin_l,xmax_l,ymin_l,ymax_l = left_eye_coords
@@ -69,11 +69,11 @@ def app_drowsiness_detection():
 
                 # evaluate
                 print(prediction)
-                print(probs)
+                #print(probs)
                 # # Put text on image
 
 
-                if (prediction.count('Closed')==2) or ("yawn" in prediction):
+                if ('r_closed' and 'l_closed' in prediction) or ("yawn" in prediction):
                     self.drowsy_counter += 1
                     if self.drowsy_counter >= 6:
                         self.drowsy_flag=True

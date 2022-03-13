@@ -11,7 +11,7 @@ def getLandmarks(image):
     return landmarks
 
 def getRightEyeRect(image, landmarks):
-    eye_top = int(landmarks[27].y * image.shape[0])
+    eye_top = int(landmarks[257].y * image.shape[0])
     eye_left = int(landmarks[362].x * image.shape[1])
     eye_bottom = int(landmarks[374].y * image.shape[0])
     eye_right = int(landmarks[263].x * image.shape[1])
@@ -25,7 +25,7 @@ def getRightEyeRect(image, landmarks):
 
 def getLeftEyeRect(image, landmarks):
     # eye_left landmarks (27, 23, 130, 133) ->? how to utilize z info
-    eye_top = int(landmarks[159].y * image.shape[0])
+    eye_top = int(landmarks[27].y * image.shape[0]) #159
     eye_left = int(landmarks[33].x * image.shape[1])
     eye_bottom = int(landmarks[145].y * image.shape[0])
     eye_right = int(landmarks[133].x * image.shape[1])

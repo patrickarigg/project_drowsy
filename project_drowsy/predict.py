@@ -30,21 +30,21 @@ def mapping(face_predict, left_eye_predict, right_eye_predict):
         result.append('no_yawn')
 
     if left_eye_predict == 0:
-        result.append('closed')
+        result.append('l_closed')
     else:
-        result.append('open')
+        result.append('l_open')
 
     if right_eye_predict == 0:
-        result.append('closed')
+        result.append('r_closed')
     else:
-        result.append('open')
+        result.append('r_open')
 
     return result
 
-def make_prediction(**params):
+def make_prediction(face_model,eye_model,**params):
     cropped_face, face_coords = face_preprocess(**params)
     cropped_left_eye, cropped_right_eye = eyes_preprocessing(**params)
-    face_model, eye_model = get_models()
+    #face_model, eye_model = get_models()
 
     yawn_prob = face_model.predict(cropped_face)[0][0]
     left_eye_prob = eye_model.predict(cropped_left_eye[0])[0][0]
