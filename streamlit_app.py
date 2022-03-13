@@ -75,7 +75,7 @@ def app_drowsiness_detection():
 
                 if (prediction.count('Closed')==2) or ("yawn" in prediction):
                     self.drowsy_counter += 1
-                    if self.drowsy_counter >= 5:
+                    if self.drowsy_counter >= 10:
                         self.drowsy_flag=True
                         text = "WARNING! DROWSY DRIVER!"
                         colour = (255, 0, 0)
