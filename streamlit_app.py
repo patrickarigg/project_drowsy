@@ -27,7 +27,8 @@ def app_drowsiness_detection():
         def __init__(self) -> None:
             self.drowsy_counter = 0
             self.drowsy_flag = False
-            pass
+            self.drowsy_counter=0
+
 
         def draw_and_predict(self, image):
 
@@ -42,6 +43,7 @@ def app_drowsiness_detection():
                     #play_obj.wait_done()
                     #time.sleep(1) # Sleep for 1 second
                     self.drowsy_flag=False
+                    #self.drowsy_counter=0
 
 
 
@@ -71,20 +73,20 @@ def app_drowsiness_detection():
                 # # Put text on image
 
 
-                if ("closed" in prediction) or ("yawn" in prediction):
+                if (prediction.count('Closed')==2) or ("yawn" in prediction):
                     self.drowsy_counter += 1
                     if self.drowsy_counter >= 5:
                         self.drowsy_flag=True
-                        text = "Prediction = Drowsy"
+                        text = "WARNING! DROWSY DRIVER!"
                         colour = (255, 0, 0)
                     else:
-                        text = "Prediction = Alert"
+                        text = "DRIVER IS ALERT"
                         colour = (0, 255, 0)
                     cv2.putText(image, text, (40, 40),
                             cv2.FONT_HERSHEY_PLAIN, 2, colour, 2)
                 else:
                     self.drowsy_counter = 0
-                    text = "Prediction = Alert"
+                    text = "DRIVER IS ALERT"
                     cv2.putText(image, text, (40, 40),
                             cv2.FONT_HERSHEY_PLAIN, 2, (0, 255, 0), 2)
             except Exception as e:
