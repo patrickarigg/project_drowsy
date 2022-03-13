@@ -73,7 +73,7 @@ def app_drowsiness_detection():
                 # # Put text on image
 
 
-                if ('r_closed' and 'l_closed' in prediction) or ("yawn" in prediction):
+                if (('r_closed' in prediction) and ('l_closed' in prediction)) or ("yawn" in prediction):
                     self.drowsy_counter += 1
                     if self.drowsy_counter >= 6:
                         self.drowsy_flag=True
