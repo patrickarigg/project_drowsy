@@ -41,9 +41,9 @@ def mapping(face_predict, left_eye_predict, right_eye_predict):
 
     return result
 
-def make_prediction(face_model,eye_model,**params):
-    cropped_face, face_coords = face_preprocess(**params)
-    cropped_left_eye, cropped_right_eye = eyes_preprocessing(**params)
+def make_prediction(face_model,eye_model,face_detection,face_mesh,**params):
+    cropped_face, face_coords = face_preprocess(face_detection,**params)
+    cropped_left_eye, cropped_right_eye = eyes_preprocessing(face_mesh,**params)
     #face_model, eye_model = get_models()
 
     yawn_prob = face_model.predict(cropped_face)[0][0]

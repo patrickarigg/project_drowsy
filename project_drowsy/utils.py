@@ -1,8 +1,8 @@
 import mediapipe as mp
 
-def getLandmarks(image):
-    mp_face_mesh = mp.solutions.face_mesh
-    face_mesh = mp_face_mesh.FaceMesh(min_detection_confidence=0.5, min_tracking_confidence=0.5)
+def getLandmarks(image,face_mesh):
+    #mp_face_mesh = mp.solutions.face_mesh
+    #face_mesh = mp_face_mesh.FaceMesh(min_detection_confidence=0.5, min_tracking_confidence=0.5)
     # To improve performance, optionally mark the image as not writeable to
     # pass by reference.
     image.flags.writeable = False
