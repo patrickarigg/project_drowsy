@@ -2,6 +2,7 @@
 import streamlit as st
 import av
 import time
+import mediapipe as mp
 import simpleaudio as sa
 from streamlit_webrtc import (
     RTCConfiguration,
@@ -15,19 +16,41 @@ from cv2 import cv2
 from PIL import Image
 # Models and preprocessing
 from project_drowsy.predict import make_prediction, get_models
+from tensorflow.keras.models import load_model
+import os
 
 RTC_CONFIGURATION = RTCConfiguration(
     {"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]}
 )
+
+@st.cache(allow_output_mutation=True)
+def get_models():
+    local_path = f"{os.getcwd()}/project_drowsy/models/"
+    face_model = load_model(os.path.join(local_path, 'project_drowsy_models_face_model.h5'))
+    eye_model = load_model(os.path.join(local_path, 'project_drowsy_models_eye_model.h5'))
+    return face_model, eye_model
+
+@st.cache(allow_output_mutation=True)
+def get_mediapipe_models():
+    mp_eye_detect_model = mp.solutions.face_mesh
+    face_mesh = mp_eye_detect_model.FaceMesh(min_detection_confidence=0.5, min_tracking_confidence=0.5)
+    mp_face_detect_model = mp.solutions.face_detection
+    face_detection = mp_face_detect_model.FaceDetection(
+        model_selection=1, min_detection_confidence=0.5)
+    return face_detection, face_mesh
+
 
 #Main intelligence of the file, class to launch a webcam, detect faces, then detect drowsiness and output probability for drowsiness
 def app_drowsiness_detection():
     class DrowsinessPredictor(VideoProcessorBase):
 
         def __init__(self) -> None:
+            self.counter = 0
             self.drowsy_counter = 0
             self.drowsy_flag = False
             self.face_model, self.eye_model = get_models()
+            self.face_detection, self.face_mesh = get_mediapipe_models()
+            self.object_cache = None
 
 
         def draw_and_predict(self, image):
@@ -45,9 +68,12 @@ def app_drowsiness_detection():
                     self.drowsy_flag=False
                     #self.drowsy_counter=0
 
+                self.object_cache = make_prediction(self.face_model,self.eye_model,self.face_detection,self.face_mesh,**preprocess_params)
 
-
-                prediction, probs, face_coords, left_eye_coords, right_eye_coords  = make_prediction(self.face_model,self.eye_model,**preprocess_params)
+                # if self.counter % 2 == 0:
+                #     self.object_cache = make_prediction(self.face_model,self.eye_model,self.face_detection,self.face_mesh,**preprocess_params)
+                # self.counter += 1
+                prediction, probs, face_coords, left_eye_coords, right_eye_coords  = self.object_cache
 
                 # draw eye bounding boxes using co-ordinates of the bounding box (from preprocessing)
                 xmin_l,xmax_l,ymin_l,ymax_l = left_eye_coords

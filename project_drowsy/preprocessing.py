@@ -8,11 +8,11 @@ from project_drowsy.params import *
 # from google.cloud import storage
 
 
-def face_preprocess(**params):
+def face_preprocess(face_detection,**params):
     if params['predict']:
         image = params['webcam']
         if (image is not None) or (params is not None):
-          single_cropped_face, coords = detect_face(image, **params)
+          single_cropped_face, coords = detect_face(image,face_detection, **params)
           reshape_img = np.reshape(single_cropped_face, [1,145,145,3])
           # reshape_img = np.expand_dims(single_cropped_face, axis=0)
           return reshape_img, coords
@@ -47,10 +47,10 @@ def face_preprocess(**params):
     return face_data
 
 
-def detect_face(image, image_size=145, **params):
-    mp_face_detection = mp.solutions.face_detection
-    face_detection = mp_face_detection.FaceDetection(
-        model_selection=1, min_detection_confidence=0.5)
+def detect_face(image,face_detection, image_size=145, **params):
+    #mp_face_detection = params['mp_face_detect_model']
+    #face_detection = mp_face_detection.FaceDetection(
+    #    model_selection=1, min_detection_confidence=0.5)
     results = face_detection.process(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
     cant_find = []
     # If no face detections found, skip
@@ -87,13 +87,13 @@ def detect_face(image, image_size=145, **params):
         pass
 
 
-def eyes_preprocessing(**params):
+def eyes_preprocessing(face_mesh,**params):
     # for real webcam data
 
     if params['predict']:
 
         image = params['webcam']
-        eyes, eye_coords = detect_eyes(image, **params)
+        eyes, eye_coords = detect_eyes(image,face_mesh, **params)
         left_eye, right_eye = eyes
         left_eye = (np.reshape(left_eye, [1,145,145,3]),eye_coords[0])
 
@@ -126,7 +126,7 @@ def eyes_preprocessing(**params):
                                    dtype="uint8")
                 image = cv2.imdecode(image, cv2.IMREAD_COLOR)
 
-            resized_image = cv2.resize(image, (image_size, image_size))
+            resized_image = cv2.resize(image, (145, 145))
             if np.array(resized_image).shape==(145,145,4):
                 print(category)
                 print(image_name)
@@ -137,13 +137,13 @@ def eyes_preprocessing(**params):
 
 
 
-def detect_eyes(image, image_size=145, **params):
+def detect_eyes(image, face_mesh, image_size=145, **params):
 
     ''' Return two cropped eye images from a single image
     and stores them in a list of two elelments'''
     eyes = []
     try:
-        landmarks = getLandmarks(image)
+        landmarks = getLandmarks(image,face_mesh)
 
         # RIGHT EYE
         x_r, y_r, w_r, h_r = getRightEyeRect(image, landmarks)
