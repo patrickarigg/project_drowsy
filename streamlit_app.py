@@ -50,7 +50,6 @@ def app_drowsiness_detection():
             self.drowsy_flag = False
             self.face_model, self.eye_model = get_models()
             self.face_detection, self.face_mesh = get_mediapipe_models()
-            self.object_cache = None
 
 
         def draw_and_predict(self, image):
@@ -61,19 +60,22 @@ def app_drowsiness_detection():
 
             try:
                 if self.drowsy_flag:
-                    #wave_obj = sa.WaveObject.from_wave_file('airhorn.wav')
-                    #play_obj = wave_obj.play()
-                    #play_obj.wait_done()
+                    # wave_obj = sa.WaveObject.from_wave_file('airhorn.wav')
+                    # play_obj = wave_obj.play()
+                    # play_obj.wait_done()
                     #time.sleep(1) # Sleep for 1 second
                     self.drowsy_flag=False
-                    #self.drowsy_counter=0
+                    # if self.drowsy_counter == 10:
+                    #     self.drowsy_counter=0
 
-                self.object_cache = make_prediction(self.face_model,self.eye_model,self.face_detection,self.face_mesh,**preprocess_params)
+                # self.object_cache = make_prediction(self.face_model,self.eye_model,self.face_detection,self.face_mesh,**preprocess_params)
 
                 # if self.counter % 2 == 0:
                 #     self.object_cache = make_prediction(self.face_model,self.eye_model,self.face_detection,self.face_mesh,**preprocess_params)
                 # self.counter += 1
-                prediction, probs, face_coords, left_eye_coords, right_eye_coords  = self.object_cache
+                prediction, probs, face_coords, left_eye_coords, right_eye_coords = make_prediction(
+                    self.face_model, self.eye_model, self.face_detection,
+                    self.face_mesh, **preprocess_params)
 
                 # draw eye bounding boxes using co-ordinates of the bounding box (from preprocessing)
                 xmin_l,xmax_l,ymin_l,ymax_l = left_eye_coords
@@ -115,6 +117,10 @@ def app_drowsiness_detection():
                     text = "DRIVER IS ALERT"
                     cv2.putText(image, text, (40, 40),
                             cv2.FONT_HERSHEY_PLAIN, 2, (0, 255, 0), 2)
+
+
+
+
             except Exception as e:
                 print(e)
                 text = 'WARNING! DRIVER NOT FOUND!'
