@@ -60,11 +60,15 @@ def app_drowsiness_detection():
 
             try:
                 if self.drowsy_flag:
-                    # wave_obj = sa.WaveObject.from_wave_file('airhorn.wav')
-                    # play_obj = wave_obj.play()
-                    # play_obj.wait_done()
-                    #time.sleep(1) # Sleep for 1 second
-                    self.drowsy_flag=False
+                    if (self.counter - 6) % 10 == 0:
+                        wave_obj = sa.WaveObject.from_wave_file('airhorn.wav')
+                        play_obj = wave_obj.play()
+                        # play_obj.wait_done()
+                        #time.sleep(1) # Sleep for 1 second
+                        self.drowsy_flag=False
+
+
+
                     # if self.drowsy_counter == 10:
                     #     self.drowsy_counter=0
 
@@ -103,10 +107,11 @@ def app_drowsiness_detection():
 
                 if (('r_closed' in prediction) and ('l_closed' in prediction)) or ("yawn" in prediction):
                     self.drowsy_counter += 1
+                    self.counter += 1
                     if self.drowsy_counter >= 6:
-                        self.drowsy_flag=True
                         text = "WARNING! DROWSY DRIVER!"
                         colour = (255, 0, 0)
+                        self.drowsy_flag = True
                     else:
                         text = "DRIVER IS ALERT"
                         colour = (0, 255, 0)
@@ -114,6 +119,7 @@ def app_drowsiness_detection():
                             cv2.FONT_HERSHEY_PLAIN, 2, colour, 2)
                 else:
                     self.drowsy_counter = 0
+                    self.counter = 0
                     text = "DRIVER IS ALERT"
                     cv2.putText(image, text, (40, 40),
                             cv2.FONT_HERSHEY_PLAIN, 2, (0, 255, 0), 2)
