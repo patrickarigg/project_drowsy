@@ -45,12 +45,14 @@ def app_drowsiness_detection():
     class DrowsinessPredictor(VideoProcessorBase):
 
         def __init__(self) -> None:
-            self.counter = 0
-            self.drowsy_counter = 0
-            self.drowsy_flag = False
+
             self.face_model, self.eye_model = get_models()
             self.face_detection, self.face_mesh = get_mediapipe_models()
-
+            self.wave_obj = sa.WaveObject.from_wave_file('airhorn.wav')
+            self.drowsy_counter = 0
+            self.play_sound_alert = False
+            self.play = None
+            self.playing = False
 
         def draw_and_predict(self, image):
 
@@ -59,72 +61,60 @@ def app_drowsiness_detection():
                                     predict=True)
 
             try:
-                if self.drowsy_flag:
-                    if (self.counter - 6) % 10 == 0:
-                        wave_obj = sa.WaveObject.from_wave_file('airhorn.wav')
-                        play_obj = wave_obj.play()
-                        # play_obj.wait_done()
-                        #time.sleep(1) # Sleep for 1 second
-                        self.drowsy_flag=False
-
-
-
-                    # if self.drowsy_counter == 10:
-                    #     self.drowsy_counter=0
-
-                # self.object_cache = make_prediction(self.face_model,self.eye_model,self.face_detection,self.face_mesh,**preprocess_params)
-
-                # if self.counter % 2 == 0:
-                #     self.object_cache = make_prediction(self.face_model,self.eye_model,self.face_detection,self.face_mesh,**preprocess_params)
-                # self.counter += 1
+                # FIND FACE & EYES,GET BOUNDING BOX COORDS AND MAKE PREDICTION
                 prediction, probs, face_coords, left_eye_coords, right_eye_coords = make_prediction(
                     self.face_model, self.eye_model, self.face_detection,
                     self.face_mesh, **preprocess_params)
 
+                print(prediction)
+
                 # draw eye bounding boxes using co-ordinates of the bounding box (from preprocessing)
+                ## draw left eye box
                 xmin_l,xmax_l,ymin_l,ymax_l = left_eye_coords
-                xmin_r, xmax_r, ymin_r, ymax_r = right_eye_coords
-                #left eye
                 cv2.rectangle(image, (xmax_l,ymax_l), (xmin_l,ymin_l),
                             color=(0, 255, 0), thickness=2)
-                #right eye
+                ## draw right eye box
+                xmin_r, xmax_r, ymin_r, ymax_r = right_eye_coords
                 cv2.rectangle(image, (xmax_r, ymax_r), (xmin_r, ymin_r),
                             color=(0, 255, 0),
                             thickness=2)
 
-                #draw face box
-                #print(face_coords)
+                ##draw face box
                 xmin, xmax, ymin, ymax = face_coords
                 cv2.rectangle(image, (xmax, ymax), (xmin, ymin),
                             color=(0, 255, 0),
                             thickness=3)
 
-                # evaluate
-                print(prediction)
-                #print(probs)
+
                 # # Put text on image
 
+                drowsy = (('r_closed' in prediction) and ('l_closed' in prediction)) or ("yawn" in prediction)
 
-                if (('r_closed' in prediction) and ('l_closed' in prediction)) or ("yawn" in prediction):
+                if drowsy:
                     self.drowsy_counter += 1
-                    self.counter += 1
-                    if self.drowsy_counter >= 6:
+                    if self.drowsy_counter >= 8:
                         text = "WARNING! DROWSY DRIVER!"
                         colour = (255, 0, 0)
-                        self.drowsy_flag = True
+                        self.play_sound_alert = True #COMMENT THIS LINE OUT TO REMOVE SOUND
+
                     else:
                         text = "DRIVER IS ALERT"
                         colour = (0, 255, 0)
+
                     cv2.putText(image, text, (40, 40),
                             cv2.FONT_HERSHEY_PLAIN, 2, colour, 2)
                 else:
                     self.drowsy_counter = 0
-                    self.counter = 0
                     text = "DRIVER IS ALERT"
                     cv2.putText(image, text, (40, 40),
                             cv2.FONT_HERSHEY_PLAIN, 2, (0, 255, 0), 2)
 
-
+                # # Play sound if activated
+                if self.play_sound_alert:
+                    if not self.playing:
+                        self.play = self.wave_obj.play()
+                    self.play_sound_alert=False
+                    self.playing = self.play.is_playing()
 
 
             except Exception as e:
