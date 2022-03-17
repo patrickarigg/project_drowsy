@@ -164,8 +164,8 @@ def about():
 
 ############################ Sidebar + launching #################################################
 
-object_detection_page = "Driver Drowsiness Detector"
-about_page = "About Project Drowsy"
+object_detection_page = "F.R.I.D.A (Fatigue Related Intelligent Driver Assistant)"
+about_page = "About F.R.I.D.A"
 
 app_mode = st.sidebar.selectbox(
     "Choose the app mode",
