@@ -162,33 +162,22 @@ def about():
     drowsy_image = Image.open('drowsy_example.png')
     st.image(drowsy_image, caption='Drowsy driver')
 
-
-def pre_recorded():
-
-    # # replace sample.mp4 for pre-recorded video
-    # video_file = open("sample.mp4", "rb").read()
-    # st.video(video_file, start_time = 3)
-
-    st.video("https://www.youtube.com/watch?v=DrKLYvLPidw")
-
 ############################ Sidebar + launching #################################################
 
-object_detection_page = "Live Video Detector"
-pre_recorded_video = "Pre-recorded Video"
-about_page = "About Drowsiness Detection"
+object_detection_page = "Driver Drowsiness Detector"
+about_page = "About Project Drowsy"
 
 app_mode = st.sidebar.selectbox(
     "Choose the app mode",
     [
-        about_page,
         object_detection_page,
-        pre_recorded_video
+        about_page
     ],
 )
+
 st.subheader(app_mode)
-if app_mode == about_page:
-    about()
+
 if app_mode == object_detection_page:
     app_drowsiness_detection()
-if app_mode == pre_recorded_video:
-    pre_recorded()
+if app_mode == about_page:
+    about()
