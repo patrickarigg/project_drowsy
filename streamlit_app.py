@@ -95,7 +95,7 @@ def app_drowsiness_detection():
                     if self.drowsy_counter >= 8:
                         text = "WARNING! DROWSY DRIVER!"
                         colour = (255, 0, 0)
-                        self.play_sound_alert = True #COMMENT THIS LINE OUT TO REMOVE SOUND
+                        #self.play_sound_alert = True #COMMENT THIS LINE OUT TO REMOVE SOUND
 
                     else:
                         text = "DRIVER IS ALERT"
