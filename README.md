@@ -1,4 +1,5 @@
 # Project Drowsy
+This project was created as part of the Le Wagon Data Science Bootcamp by Patrick Rigg, William Graham, Kai Mujeras and Julien Festou.
 - Document here the project: project_drowsy
 - Description: Project Description
 - Data Source: https://www.kaggle.com/datasets/dheerajperumandla/drowsiness-dataset
