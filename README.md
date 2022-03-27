@@ -8,8 +8,7 @@ containing
 - 725 images of drivers yawning
 - 723 images of drivers not yawning
 
-Try it out for yourself here:
-https://share.streamlit.io/patrickarigg/project_drowsy/cloud-app
+Try it out for yourself [here](https://share.streamlit.io/patrickarigg/project_drowsy/cloud-app)!
 
 This project was created as part of the Le Wagon Data Science Bootcamp (batch #753) by 
 [Patrick Rigg](https://github.com/patrickarigg), 
