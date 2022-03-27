@@ -10,7 +10,7 @@ containing
 
 Try it out for yourself [here](https://share.streamlit.io/patrickarigg/project_drowsy/cloud-app)!
 
-This project was created as part of the Le Wagon Data Science Bootcamp (batch #753) by 
+This project was created as part of the [Le Wagon Data Science Bootcamp](https://www.lewagon.com/data-science-course/part-time) (batch #753) by 
 [Patrick Rigg](https://github.com/patrickarigg), 
 [Will Graham](https://github.com/willgraham29), 
 [Kai Majerus](https://github.com/kai-majerus) and 
