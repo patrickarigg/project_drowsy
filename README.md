@@ -1,4 +1,11 @@
 # Project Drowsy
+This project outlines a model to predict driver drowsiness based on two key characteristics - eyes open/closed and yawning/not-yawning.
+
+The model uses mediapipe for face/eye detection and a custom trained CNN model to predict eyes open/closed and yawning/not-yawning.
+
+Try it out for yourself here:
+https://share.streamlit.io/patrickarigg/project_drowsy/cloud-app
+
 This project was created as part of the Le Wagon Data Science Bootcamp by Patrick Rigg, William Graham, Kai Mujeras and Julien Festou.
 - Document here the project: project_drowsy
 - Description: Project Description
