@@ -1,8 +1,14 @@
 # Project Drowsy
 This project outlines a model to predict driver drowsiness based on two key characteristics - eyes open/closed and yawning/not-yawning.
 
-The model uses [mediapipe](https://google.github.io/mediapipe/) for face/eye detection and a custom trained CNN model to predict eyes open/closed and yawning/not-yawning. Try it out for yourself here:
+The model uses [mediapipe](https://google.github.io/mediapipe/) for face/eye detection and a custom trained CNN model to predict eyes open/closed and yawning/not-yawning. The CNN model was trained using a [kaggle dataset](https://www.kaggle.com/datasets/dheerajperumandla/drowsiness-dataset)
+containing
+- 726 images of eyes closed
+- 726 images of eyes open
+- 725 images of drivers yawning
+- 723 images of drivers not yawning
 
+Try it out for yourself here:
 https://share.streamlit.io/patrickarigg/project_drowsy/cloud-app
 
 This project was created as part of the Le Wagon Data Science Bootcamp (batch #753) by 
@@ -12,12 +18,7 @@ This project was created as part of the Le Wagon Data Science Bootcamp (batch #7
 [Julien Festou](https://github.com/JulienFest).
 
 
-- Document here the project: project_drowsy
-- Description: Project Description
-- Data Source: https://www.kaggle.com/datasets/dheerajperumandla/drowsiness-dataset
-- Type of analysis:
 
-Please document the project the better you can.
 
 # Startup the project
 
