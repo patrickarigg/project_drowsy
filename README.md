@@ -7,9 +7,9 @@ Try it out for yourself here:
 https://share.streamlit.io/patrickarigg/project_drowsy/cloud-app
 
 This project was created as part of the Le Wagon Data Science Bootcamp by 
-[Patrick Rigg] (https://github.com/patrickarigg), 
+[Patrick Rigg](https://github.com/patrickarigg), 
 [Will Graham](https://github.com/willgraham29), 
-[Kai Majerus] (https://github.com/kai-majerus) and 
+[Kai Majerus](https://github.com/kai-majerus) and 
 [Julien Festou](https://github.com/JulienFest).
 
 
