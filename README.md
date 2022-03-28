@@ -1,5 +1,7 @@
 # Project Drowsy
-Project Drowsy outlines a model to predict driver drowsiness based on two key characteristics - eyes open/closed and yawning/not-yawning.
+Project Drowsy is a computer vision model to predict driver drowsiness based on two key characteristics - eyes open/closed and yawning/not-yawning.
+
+<img src="https://github.com/patrickarigg/project_drowsy/blob/master/drowsy_example.png" alt="drowsy example" width="400"/>|<img src="https://github.com/patrickarigg/project_drowsy/blob/master/alert_example.png" alt="drowsy example" width="400"/>
 
 The model uses [mediapipe](https://google.github.io/mediapipe/) for face/eye detection and a custom trained CNN model to predict eyes open/closed and yawning/not-yawning. The CNN model was trained using a [kaggle dataset](https://www.kaggle.com/datasets/dheerajperumandla/drowsiness-dataset)
 containing
