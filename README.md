@@ -1,4 +1,4 @@
-# Project Drowsy
+# Project Drowsy 🥱
 Project Drowsy is a computer vision project to predict driver drowsiness based on two key characteristics - eyes open/closed and yawning/not-yawning.
 
 <img src="https://github.com/patrickarigg/project_drowsy/blob/master/drowsy_example.png" alt="drowsy example" width="400"/>|<img src="https://github.com/patrickarigg/project_drowsy/blob/master/alert_example.png" alt="drowsy example" width="400"/>
