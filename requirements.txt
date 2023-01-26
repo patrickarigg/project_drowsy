@@ -9,8 +9,8 @@ simpleaudio
 tensorflow==2.5
 
 #for handling image
-opencv-python-headless
-opencv-contrib-python-headless
+opencv-python-headless==4.5.5.64
+opencv-contrib-python-headless==4.5.5.64
 mediapipe
 cvzone
 Pillow
