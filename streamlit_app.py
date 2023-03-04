@@ -12,7 +12,7 @@ from streamlit_webrtc import (
 )
 
 #Import for handling image
-from cv2 import cv2
+import cv2
 from PIL import Image
 # Models and preprocessing
 from project_drowsy.predict import make_prediction, get_models
