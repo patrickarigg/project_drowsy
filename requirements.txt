@@ -1,6 +1,6 @@
 #for streamlit
 streamlit==1.2.0
-streamlit-webrtc
+streamlit-webrtc==0.44.1
 aiortc==1.2.1
 av
 simpleaudio
